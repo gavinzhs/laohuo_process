@@ -1,25 +1,19 @@
 package main
+
 import (
-    "net/http")
+	"flag"
+	"log"
+	"net/http"
+)
 
-func main(){
-    print("start")
+func main() {
+	log.Println("start")
 
-    http.HandleFunc("/", mainHandler)
-    http.HandleFunc("/test1", test1Handler)
-    http.HandleFunc("/test2", test2Handler)
+	port := flag.String("p", ":3000", "address the server listen on")
+	war := flag.String("war", "./public", "directory of war files")
+	flag.Parse()
 
-    http.ListenAndServe(":3000", nil)
-}
+	mount(*war)
 
-func mainHandler(w http.ResponseWriter, r *http.Request){
-    w.Write([]byte("main"))
-}
-
-func test1Handler(w http.ResponseWriter, r *http.Request){
-    w.Write([]byte("test1"))
-}
-
-func test2Handler(w http.ResponseWriter, r *http.Request){
-    w.Write([]byte("test2"))
+	log.Fatal(http.ListenAndServe(*port, nil))
 }
