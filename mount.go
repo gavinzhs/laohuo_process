@@ -18,6 +18,12 @@ func mount(war string) {
 	//	m.Use(render.Renderer())
 	//    m.Use(midTextDefault)
 
+	//map web
+	m.Use(func(w http.ResponseWriter, c martini.Context) {
+		web := &Web{w: w}
+		c.Map(web)
+	})
+
 	m.Group("/test", func(api martini.Router) {
 		api.Get("", mainHandler)
 		api.Get("/1", test1Handler)
